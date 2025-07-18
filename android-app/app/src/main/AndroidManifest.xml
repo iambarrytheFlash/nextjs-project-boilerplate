@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions for accessing media files and external storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    
+    <!-- Permission for updating widgets -->
+    <uses-permission android:name="android.permission.BIND_REMOTEVIEWS" />
+    
+    <!-- Internet permission for potential online media sources -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.VideoGifWidget"
+        tools:targetApi="31">
+        
+        <!-- Main Activity for app configuration and media selection -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.VideoGifWidget">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Widget Configuration Activity -->
+        <activity
+            android:name=".WidgetConfigurationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.VideoGifWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <!-- App Widget Provider -->
+        <receiver
+            android:name=".VideoGifWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/video_gif_widget_info" />
+        </receiver>
+
+        <!-- Service for periodic widget updates -->
+        <service
+            android:name=".WidgetUpdateService"
+            android:exported="false" />
+
+    </application>
+
+</manifest>
